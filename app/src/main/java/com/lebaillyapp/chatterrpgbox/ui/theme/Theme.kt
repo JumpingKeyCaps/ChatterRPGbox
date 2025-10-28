@@ -70,7 +70,7 @@ fun ChatterRPGboxTheme(
             val window = (view.context as Activity).window
 
             // 1. Définir la couleur de la Barre de Statut
-            window.statusBarColor = colorScheme.primary.toArgb()
+            window.statusBarColor = Color(0x00000000).toArgb()
 
             // 2. Définir la couleur de la Barre de Navigation
             window.navigationBarColor = colorScheme.primary.toArgb()
@@ -86,7 +86,10 @@ fun ChatterRPGboxTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = pixelTypography,
+        typography = medievalTypography,
         content = content
     )
+
+
+
 }
