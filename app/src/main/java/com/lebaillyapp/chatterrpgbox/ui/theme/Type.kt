@@ -42,9 +42,35 @@ val pixelFont = FontFamily(
     Font(R.font.micro_regular)
 )
 
+val pixelAltFont = FontFamily(
+    Font(R.font.tiny_regular)
+)
+
+
+val medievalPixelFont = FontFamily(
+    Font(R.font.jacquard_regular)
+)
+
+
+val medievalTypography = Typography(
+    bodyLarge = TextStyle(
+        fontFamily = medievalPixelFont,
+        fontSize = 16.sp,
+        color = Color.White
+    )
+)
+
 val pixelTypography = Typography(
     bodyLarge = TextStyle(
         fontFamily = pixelFont,
+        fontSize = 16.sp,
+        color = Color.White
+    )
+)
+
+val pixelAltTypography = Typography(
+    bodyLarge = TextStyle(
+        fontFamily = pixelAltFont,
         fontSize = 16.sp,
         color = Color.White
     )
