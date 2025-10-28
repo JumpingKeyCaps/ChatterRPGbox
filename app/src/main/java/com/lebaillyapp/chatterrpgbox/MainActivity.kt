@@ -16,6 +16,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,7 +30,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.lebaillyapp.chatterrpgbox.model.AnimStep
 import com.lebaillyapp.chatterrpgbox.ui.theme.ChatterRPGboxTheme
+import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +48,61 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun TestScreen() {
+
+
+    val heroAnimationSequence1 = listOf(
+        AnimStep(drawableResId = R.drawable.mrevil_angry_2, durationMs = 200L),
+        AnimStep(drawableResId = R.drawable.mrevil_angry_4, durationMs = 200L),
+        AnimStep(drawableResId = R.drawable.mrevil_angry_2, durationMs = 200L),
+        AnimStep(drawableResId = R.drawable.mrevil_angry_3, durationMs = 200L)
+    )
+
+
+    val heroAnimationSequence = listOf(
+        AnimStep(drawableResId = R.drawable.mrevil_angry_1, durationMs = 2000L),
+        AnimStep(drawableResId = R.drawable.mrevil_angry_4, durationMs = 150L),
+        AnimStep(drawableResId = R.drawable.mrevil_angry_5, durationMs = 150L),
+        AnimStep(drawableResId = R.drawable.mrevil_angry_4, durationMs = 150L),
+        AnimStep(drawableResId = R.drawable.mrevil_angry_3, durationMs = 150L),
+        AnimStep(drawableResId = R.drawable.mrevil_angry_4, durationMs = 150L),
+        AnimStep(drawableResId = R.drawable.mrevil_angry_3, durationMs = 150L),
+        AnimStep(drawableResId = R.drawable.mrevil_angry_4, durationMs = 150L),
+        AnimStep(drawableResId = R.drawable.mrevil_angry_5, durationMs = 150L),
+        AnimStep(drawableResId = R.drawable.mrevil_angry_4, durationMs = 150L),
+        AnimStep(drawableResId = R.drawable.mrevil_angry_6, durationMs = 350L),
+        AnimStep(drawableResId = R.drawable.mrevil_angry_2, durationMs = 500L)
+    )
+
+
+    val heroAnimationSequence5 = listOf(
+        AnimStep(drawableResId = R.drawable.mrevil_angry_1, durationMs = 1000L),
+        AnimStep(drawableResId = R.drawable.mrevil_angry_3, durationMs = 500L),
+        AnimStep(drawableResId = R.drawable.mrevil_angry_7, durationMs = 2000L),
+        AnimStep(drawableResId = R.drawable.mrevil_angry_6, durationMs = 300L),
+        AnimStep(drawableResId = R.drawable.mrevil_angry_2, durationMs = 300L),
+        AnimStep(drawableResId = R.drawable.mrevil_angry_1, durationMs = 500L),
+
+    )
+
+
+
+    val heroAnimationSequence4 = listOf(
+        AnimStep(drawableResId = R.drawable.mrevil_angry_1, durationMs = 400L),
+        AnimStep(drawableResId = R.drawable.mrevil_angry_5, durationMs = 200L),
+        AnimStep(drawableResId = R.drawable.mrevil_angry_4, durationMs = 200L),
+        )
+
+    val heroAnimationSequence6 = listOf(
+        AnimStep(drawableResId = R.drawable.mrevil_angry_1, durationMs = 3000L),
+        AnimStep(drawableResId = R.drawable.mrevil_angry_2, durationMs = 2000L),
+    )
+
+
+
+
+
+
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -51,24 +113,60 @@ fun TestScreen() {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.mrevil_angry_0),
-                contentDescription = "Hero",
-                modifier = Modifier.size(200.dp),
-                contentScale = ContentScale.Fit,
+            AnimatedHero(
+                sequence = heroAnimationSequence,
+                modifier = Modifier.size(120.dp)
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "Hello ChatterRPGbox!",
+                text = "Welcome in hell my lord!",
                 style = MaterialTheme.typography.bodyLarge,
-                fontSize = 28.sp,
+                fontSize = 22.sp,
                 color = Color.White
             )
         }
     }
 }
+
+
+@Composable
+fun AnimatedHero(
+    sequence: List<AnimStep>,
+    modifier: Modifier = Modifier
+) {
+    // État mutable pour stocker l'ID de l'asset actuellement affiché
+    var currentDrawableId by remember { mutableStateOf(sequence.first().drawableResId) }
+
+    // LaunchedEffect crée une coroutine qui s'exécute quand le composable entre dans la composition
+    LaunchedEffect(key1 = sequence) {
+        // Boucle infinie pour jouer l'animation en permanence
+        while (true) {
+            // Parcourir chaque étape de la séquence
+            for (step in sequence) {
+                // 1. Mettre à jour l'image affichée
+                currentDrawableId = step.drawableResId
+
+                // 2. Attendre le délai configuré
+                delay(step.durationMs)
+            }
+        }
+    }
+
+    // Composant Image final (utilise l'ID d'asset mis à jour)
+    Image(
+        painter = painterResource(id = currentDrawableId),
+        contentDescription = "Hero Animation Frame",
+        modifier = modifier,
+        contentScale = ContentScale.Fit
+    )
+}
+
+
+
+
+
 
 @Preview(showBackground = true)
 @Composable
