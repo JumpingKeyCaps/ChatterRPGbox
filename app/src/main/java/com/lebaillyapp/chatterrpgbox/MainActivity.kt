@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -58,17 +60,17 @@ fun TestScreen() {
     )
 
 
-    val heroAnimationSequence = listOf(
+    val heroAnimationSequence2 = listOf(
         AnimStep(drawableResId = R.drawable.mrevil_angry_1, durationMs = 2000L),
-        AnimStep(drawableResId = R.drawable.mrevil_angry_4, durationMs = 150L),
-        AnimStep(drawableResId = R.drawable.mrevil_angry_5, durationMs = 150L),
-        AnimStep(drawableResId = R.drawable.mrevil_angry_4, durationMs = 150L),
-        AnimStep(drawableResId = R.drawable.mrevil_angry_3, durationMs = 150L),
-        AnimStep(drawableResId = R.drawable.mrevil_angry_4, durationMs = 150L),
-        AnimStep(drawableResId = R.drawable.mrevil_angry_3, durationMs = 150L),
-        AnimStep(drawableResId = R.drawable.mrevil_angry_4, durationMs = 150L),
-        AnimStep(drawableResId = R.drawable.mrevil_angry_5, durationMs = 150L),
-        AnimStep(drawableResId = R.drawable.mrevil_angry_4, durationMs = 150L),
+        AnimStep(drawableResId = R.drawable.mrevil_angry_4, durationMs = 100L),
+        AnimStep(drawableResId = R.drawable.mrevil_angry_5, durationMs = 100L),
+        AnimStep(drawableResId = R.drawable.mrevil_angry_4, durationMs = 100L),
+        AnimStep(drawableResId = R.drawable.mrevil_angry_3, durationMs = 100L),
+        AnimStep(drawableResId = R.drawable.mrevil_angry_4, durationMs = 100L),
+        AnimStep(drawableResId = R.drawable.mrevil_angry_3, durationMs = 100L),
+        AnimStep(drawableResId = R.drawable.mrevil_angry_4, durationMs = 100L),
+        AnimStep(drawableResId = R.drawable.mrevil_angry_5, durationMs = 100L),
+        AnimStep(drawableResId = R.drawable.mrevil_angry_4, durationMs = 100L),
         AnimStep(drawableResId = R.drawable.mrevil_angry_6, durationMs = 350L),
         AnimStep(drawableResId = R.drawable.mrevil_angry_2, durationMs = 500L)
     )
@@ -92,13 +94,18 @@ fun TestScreen() {
         AnimStep(drawableResId = R.drawable.mrevil_angry_4, durationMs = 200L),
         )
 
-    val heroAnimationSequence6 = listOf(
+    val heroAnimationSequence8 = listOf(
         AnimStep(drawableResId = R.drawable.mrevil_angry_1, durationMs = 3000L),
         AnimStep(drawableResId = R.drawable.mrevil_angry_2, durationMs = 2000L),
     )
 
 
-
+    val heroAnimationSequence = listOf(
+        AnimStep(drawableResId = R.drawable.mrevil_angry_1, durationMs = 3000L),
+        AnimStep(drawableResId = R.drawable.mrevil_angry_2, durationMs = 2000L),
+        AnimStep(drawableResId = R.drawable.mrevil_angry_1, durationMs = 3000L),
+        AnimStep(drawableResId = R.drawable.mrevil_angry_7, durationMs = 2000L),
+    )
 
 
 
@@ -107,24 +114,34 @@ fun TestScreen() {
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFF000000)),
-        contentAlignment = Alignment.Center
     ) {
+
+        Image(
+            modifier = Modifier.align(Alignment.TopCenter)
+                .fillMaxWidth(),
+            painter = painterResource(id = R.drawable.background_1),
+            contentDescription = "Background",
+            contentScale = ContentScale.FillWidth
+        )
+
+
         Column(
+            modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 86.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
             AnimatedHero(
                 sequence = heroAnimationSequence,
-                modifier = Modifier.size(120.dp)
+                modifier = Modifier.size(100.dp)
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(1.dp))
 
             Text(
-                text = "Welcome in hell my lord!",
+                text = "Hell is loading...",
                 style = MaterialTheme.typography.bodyLarge,
-                fontSize = 22.sp,
-                color = Color.White
+                fontSize = 20.sp,
+                color = Color.White.copy(alpha = 0.5f)
             )
         }
     }
@@ -134,7 +151,8 @@ fun TestScreen() {
 @Composable
 fun AnimatedHero(
     sequence: List<AnimStep>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isLooping: Boolean = true
 ) {
     // État mutable pour stocker l'ID de l'asset actuellement affiché
     var currentDrawableId by remember { mutableStateOf(sequence.first().drawableResId) }
@@ -142,7 +160,7 @@ fun AnimatedHero(
     // LaunchedEffect crée une coroutine qui s'exécute quand le composable entre dans la composition
     LaunchedEffect(key1 = sequence) {
         // Boucle infinie pour jouer l'animation en permanence
-        while (true) {
+        while (isLooping) {
             // Parcourir chaque étape de la séquence
             for (step in sequence) {
                 // 1. Mettre à jour l'image affichée
