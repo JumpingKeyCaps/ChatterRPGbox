@@ -4,17 +4,28 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.shape.CutCornerShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,7 +44,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lebaillyapp.chatterrpgbox.model.AnimStep
+import com.lebaillyapp.chatterrpgbox.ui.animation.heroAnimationSequence
+import com.lebaillyapp.chatterrpgbox.ui.animation.heroAnimationSequence2
 import com.lebaillyapp.chatterrpgbox.ui.theme.ChatterRPGboxTheme
+import com.lebaillyapp.chatterrpgbox.ui.theme.medievalPixelFont
+import com.lebaillyapp.chatterrpgbox.ui.theme.pixelFont
 import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
@@ -51,71 +66,32 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun TestScreen() {
 
-
-    val heroAnimationSequence1 = listOf(
-        AnimStep(drawableResId = R.drawable.mrevil_angry_2, durationMs = 200L),
-        AnimStep(drawableResId = R.drawable.mrevil_angry_4, durationMs = 200L),
-        AnimStep(drawableResId = R.drawable.mrevil_angry_2, durationMs = 200L),
-        AnimStep(drawableResId = R.drawable.mrevil_angry_3, durationMs = 200L)
+    // Round shape of the card
+    val speakCardRoundedCornerShaper = RoundedCornerShape(
+        topStart = 42.dp,
+        topEnd = 42.dp,
+        bottomStart = 42.dp,
+        bottomEnd = 42.dp
+    )
+    // Cut shape of the card
+    val speakCardCutCornerShaper = CutCornerShape(
+        topStart = 12.dp,
+        topEnd = 12.dp,
+        bottomStart = 12.dp,
+        bottomEnd = 12.dp
     )
 
-
-    val heroAnimationSequence2 = listOf(
-        AnimStep(drawableResId = R.drawable.mrevil_angry_1, durationMs = 2000L),
-        AnimStep(drawableResId = R.drawable.mrevil_angry_4, durationMs = 100L),
-        AnimStep(drawableResId = R.drawable.mrevil_angry_5, durationMs = 100L),
-        AnimStep(drawableResId = R.drawable.mrevil_angry_4, durationMs = 100L),
-        AnimStep(drawableResId = R.drawable.mrevil_angry_3, durationMs = 100L),
-        AnimStep(drawableResId = R.drawable.mrevil_angry_4, durationMs = 100L),
-        AnimStep(drawableResId = R.drawable.mrevil_angry_3, durationMs = 100L),
-        AnimStep(drawableResId = R.drawable.mrevil_angry_4, durationMs = 100L),
-        AnimStep(drawableResId = R.drawable.mrevil_angry_5, durationMs = 100L),
-        AnimStep(drawableResId = R.drawable.mrevil_angry_4, durationMs = 100L),
-        AnimStep(drawableResId = R.drawable.mrevil_angry_6, durationMs = 350L),
-        AnimStep(drawableResId = R.drawable.mrevil_angry_2, durationMs = 500L)
-    )
+    // size of the avatar in dp
+    val avatarSizer = 125
 
 
-    val heroAnimationSequence5 = listOf(
-        AnimStep(drawableResId = R.drawable.mrevil_angry_1, durationMs = 1000L),
-        AnimStep(drawableResId = R.drawable.mrevil_angry_3, durationMs = 500L),
-        AnimStep(drawableResId = R.drawable.mrevil_angry_7, durationMs = 2000L),
-        AnimStep(drawableResId = R.drawable.mrevil_angry_6, durationMs = 300L),
-        AnimStep(drawableResId = R.drawable.mrevil_angry_2, durationMs = 300L),
-        AnimStep(drawableResId = R.drawable.mrevil_angry_1, durationMs = 500L),
-
-    )
-
-
-
-    val heroAnimationSequence4 = listOf(
-        AnimStep(drawableResId = R.drawable.mrevil_angry_1, durationMs = 400L),
-        AnimStep(drawableResId = R.drawable.mrevil_angry_5, durationMs = 200L),
-        AnimStep(drawableResId = R.drawable.mrevil_angry_4, durationMs = 200L),
-        )
-
-    val heroAnimationSequence8 = listOf(
-        AnimStep(drawableResId = R.drawable.mrevil_angry_1, durationMs = 3000L),
-        AnimStep(drawableResId = R.drawable.mrevil_angry_2, durationMs = 2000L),
-    )
-
-
-    val heroAnimationSequence = listOf(
-        AnimStep(drawableResId = R.drawable.mrevil_angry_1, durationMs = 3000L),
-        AnimStep(drawableResId = R.drawable.mrevil_angry_2, durationMs = 2000L),
-        AnimStep(drawableResId = R.drawable.mrevil_angry_1, durationMs = 3000L),
-        AnimStep(drawableResId = R.drawable.mrevil_angry_7, durationMs = 2000L),
-    )
-
-
-
-
+//todo THE COMPO CORE
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFF000000)),
     ) {
-
+        //Background header
         Image(
             modifier = Modifier.align(Alignment.TopCenter)
                 .fillMaxWidth(),
@@ -125,25 +101,97 @@ fun TestScreen() {
         )
 
 
-        Column(
-            modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 86.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
+        //Speak box
+        Box(modifier = Modifier.align(Alignment.BottomStart).fillMaxWidth().padding(bottom = 62.dp,start=10.dp)) {
+
+            Box(modifier = Modifier
+                .padding(
+                    start = (avatarSizer*0.45f).dp,
+                    top = (avatarSizer*0.30f).dp,
+                    end = 10.dp,
+                    bottom = 10.dp
+                )
+            ){
+                Card(
+                    modifier = Modifier
+                        .height(74.dp)
+                        .widthIn(min = 300.dp, max = 300.dp)
+                        .align(Alignment.CenterStart),
+                    shape = speakCardRoundedCornerShaper,
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color(0xFF0C0B17)
+                    ),
+
+                ) {
+                    Box(modifier = Modifier.fillMaxSize().padding(start = 60.dp, end = 20.dp)){
+
+                        Column(Modifier.fillMaxSize().align(Alignment.TopStart),verticalArrangement = Arrangement.Center) {
+                            Text(
+                                text = "Mr.Evil",
+                                fontFamily  = pixelFont,
+                                fontSize = 19.sp,
+                                modifier = Modifier
+                                    .align(Alignment.Start),
+                                color = Color(0xFF414141)
+                            )
+                            Text(
+                                text = "Welcome to hell hooman!",
+                                fontFamily  = pixelFont,
+                                fontSize = 20.sp,
+                                modifier = Modifier
+                                    .align(Alignment.Start),
+                                color = Color.White.copy(alpha = 0.8f)
+                            )
+                            Text(
+                                text = "Let first, introduce myself ...",
+                                fontFamily  = pixelFont,
+                                fontSize = 20.sp,
+                                modifier = Modifier
+                                    .align(Alignment.Start),
+                                color = Color.White.copy(alpha = 0.8f)
+                            )
+                        }
+
+
+                        Icon(
+                            painter = painterResource(id = R.drawable.touch_hand_action),
+                            contentDescription = "Skull icon",
+                            tint = Color.White.copy(alpha = 0.3f),
+                            modifier = Modifier
+                                .size(24.dp)
+                                .clickable {
+                                    // Action ici
+                                }
+                                .align(Alignment.CenterEnd)
+                                .offset(x= (-5).dp, y = 0.dp)
+
+                        )
+
+
+                    }
+
+
+
+
+                }
+            }
+
+
+            //Avatar
             AnimatedHero(
-                sequence = heroAnimationSequence,
-                modifier = Modifier.size(100.dp)
+                sequence = heroAnimationSequence2,
+                modifier = Modifier
+                    .size(avatarSizer.dp)
+                    .align(Alignment.TopStart)
             )
 
-            Spacer(modifier = Modifier.height(1.dp))
 
-            Text(
-                text = "Hell is loading...",
-                style = MaterialTheme.typography.bodyLarge,
-                fontSize = 20.sp,
-                color = Color.White.copy(alpha = 0.5f)
-            )
+
+
         }
+
+
+
     }
 }
 
