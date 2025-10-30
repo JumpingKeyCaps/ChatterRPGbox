@@ -90,8 +90,8 @@ fun SpeakBox(
                         Modifier
                             .fillMaxSize()
                             .align(Alignment.TopStart)
-                            .padding(end = 34.dp),
-                        verticalArrangement = Arrangement.Center
+                            .padding(end = 34.dp, top = 2.dp),
+                        verticalArrangement = Arrangement.Top
                     ) {
                         Text(
                             text = "Mr.Evil",
@@ -104,14 +104,15 @@ fun SpeakBox(
                         )
 
                         DialogueCrawler(
-                            modifier = Modifier.offset(y=(-2).dp),
-                            text = text2say,
+                            modifier = Modifier.offset(y = (0).dp),
+                            text = "Welcome! My name is Mr.Evil the warden of this place.",
                             fontFamily = pixelFont,
                             fontSize = 20.sp,
-                            color = Color.White.copy(alpha = 0.8f),
-                            maxWidth = 200.dp,
+                            color = Color.White,
+                            maxWidth = 300.dp,
                             currentChunk = currentChunk,
-                            currentSpeed = currentSpeed,
+                            currentSpeed = 50L,
+                            highlightMap = mapOf("Mr.Evil" to Color.Red,"warden" to Color.Yellow),
                             onChunksCount = { totalChunks = it }
                         )
                     }
